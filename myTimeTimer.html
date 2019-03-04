@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+  canvas {
+      padding-left: 0;
+      padding-right: 0;
+      margin-left: auto;
+      margin-right: auto;
+      display:block;
+
+
+      background-color: white;
+      border: 20px solid #000000;
+      border-radius: 25px;
+  }
+
+
+  .slider {
+  -webkit-appearance: none;
+  width: 80%;
+  height: 25px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  background: #4CAF50;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  background: #4CAF50;
+  cursor: pointer;
+}
+
+</style>
+
+<body>
+  <div>
+
+    <div class="slidecontainer">
+      <input style="position: relative; left: 10%;" type="range" min="0" max="60" value="0" class="slider" id="myRange">
+      <p style="position: relative; left : 25%">Minute : <span id="demo"></span></p>
+      <button style="position: relative; left : 25%" ID="start" onclick="sTimer()">Start</button>
+    </div>
+
+    <div>
+      <canvas id="canvas" style="position: absolute; left: 25%; z-index: 0;"></canvas></canvas>
+      <canvas id="ncanvas" style="position: absolute; left: 25%; z-index: 1; background-color: rgba(0, 0, 200, 0)" ></canvas></canvas>
+    </div>
+
+
+  </div>
+<script>
+  var canvas = document.getElementById("canvas");
+  canvas.width = 650;
+  canvas.height = 650;
+  var ncanvas = document.getElementById("ncanvas");
+  ncanvas.width = 650;
+  ncanvas.height = 650;
+
+  var ctx = canvas.getContext("2d");
+  var nctx = ncanvas.getContext("2d");
+
+  var radius = canvas.height / 2;
+  ctx.translate(radius, radius);
+  nctx.translate(radius, radius);
+
+  radius = radius * 0.95;
+  var pi = Math.PI;
+  ctx.beginPath();
+  ctx.arc(0, 0, radius, 0, pi * 2);
+  ctx.stroke();
+
+
+  ctx.beginPath();
+  ctx.arc(0, 0, radius * 0.05, 0, 2*Math.PI);
+  ctx.fillStyle = 'black';
+  ctx.fill();
+
+  ctx.font = radius * 0.15 + "px arial";
+  ctx.textBaseline = "middle";
+  ctx.textAlign = "center";
+
+  var ang;
+  for(num = 0; num < 60; num+=5){
+  ang = num * Math.PI / 30;
+  ctx.rotate(-ang);
+  ctx.translate(0, -radius*0.85);
+  ctx.rotate(ang);
+  ctx.fillText(num.toString(), 0, 0);
+  ctx.rotate(-ang);
+  ctx.translate(0, radius*0.85);
+  ctx.rotate(ang);
+  }
+
+
+  for(num = 0; num < 60; num++){
+  ang = num * Math.PI / 30;
+  ctx.rotate(-ang);
+  ctx.translate(0, -radius*0.74);
+
+  ctx.lineWidth = 3;
+  ctx.moveTo(0, 0);
+  if (num % 5 == 0) {
+    ctx.lineTo(0, 40);
+    ctx.stroke();
+  } else {
+    ctx.lineTo(0, 20);
+    ctx.stroke();
+  }
+  ctx.translate(0, radius*0.74);
+  ctx.rotate(ang);
+  }
+
+
+  var slider = document.getElementById("myRange");
+  var output = document.getElementById("demo");
+  output.innerHTML = slider.value;
+
+
+
+
+
+  slider.oninput = function() {
+    nctx.beginPath();
+    nctx.moveTo(0, 0);
+    nctx.clearRect(-ncanvas.width/2, -ncanvas.height/2, ncanvas.width, ncanvas.height);
+
+    nctx.arc(0, 0, radius * 0.75, pi  * 1.5 - (pi /30 * this.value), pi  * 1.5);
+    nctx.fillStyle = 'red';
+    nctx.fill();
+
+    output.innerHTML = this.value;
+  }
+
+  function sTimer(){
+    setInterval(function(){
+
+        slider.value -= 1;
+
+        nctx.beginPath();
+        nctx.moveTo(0, 0);
+        nctx.clearRect(-ncanvas.width/2, -ncanvas.height/2, ncanvas.width, ncanvas.height);
+
+        nctx.arc(0, 0, radius * 0.75, pi  * 1.5 - (pi /30 * (slider.value)), pi  * 1.5);
+        nctx.fillStyle = 'red';
+        nctx.fill();
+        if (slider.value == 0) {
+          alert("Finished!");
+        }
+
+        output.innerHTML = slider.value;
+      }, 60000);
+    }
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
