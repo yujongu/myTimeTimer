@@ -5,14 +5,13 @@
   canvas {
       padding-left: 0;
       padding-right: 0;
-      margin-left: auto;
-      margin-right: auto;
-      display:block;
+      margin: auto;
+      display: block;
 
 
       background-color: white;
-      border: 20px solid #000000;
-      border-radius: 25px;
+      /* border: 20px solid #000000;
+      border-radius: 25px; */
   }
 
 
@@ -47,6 +46,18 @@
   cursor: pointer;
 }
 
+.button{
+  background-color: red;
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
 </style>
 
 <body>
@@ -54,16 +65,17 @@
 
     <div class="slidecontainer">
       <input style="position: relative; left: 10%;" type="range" min="0" max="60" value="0" class="slider" id="myRange">
-      <p style="position: relative; left : 25%">Minute : <span id="demo"></span></p>
-      <button style="position: relative; left : 25%" ID="start" onclick="sTimer()">Start</button>
+      <p style="position: relative; left : 10%">Minute : <span id="demo"></span></p>
+
     </div>
 
     <div>
       <canvas id="canvas" style="position: absolute; left: 25%; z-index: 0;"></canvas></canvas>
       <canvas id="ncanvas" style="position: absolute; left: 25%; z-index: 1; background-color: rgba(0, 0, 200, 0)" ></canvas></canvas>
     </div>
-
-
+  </div>
+  <div>
+    <button style="position: absolute; left: 10%" class="button" onclick="sTimer()">START</button>
   </div>
 <script>
   var canvas = document.getElementById("canvas");
@@ -80,11 +92,11 @@
   ctx.translate(radius, radius);
   nctx.translate(radius, radius);
 
-  radius = radius * 0.95;
+  // radius = radius * 0.95;
   var pi = Math.PI;
-  ctx.beginPath();
-  ctx.arc(0, 0, radius, 0, pi * 2);
-  ctx.stroke();
+  // ctx.beginPath();
+  // ctx.arc(0, 0, radius, 0, pi * 2);
+  // ctx.stroke();
 
 
   ctx.beginPath();
@@ -141,7 +153,7 @@
     nctx.moveTo(0, 0);
     nctx.clearRect(-ncanvas.width/2, -ncanvas.height/2, ncanvas.width, ncanvas.height);
 
-    nctx.arc(0, 0, radius * 0.75, pi  * 1.5 - (pi /30 * this.value), pi  * 1.5);
+    nctx.arc(0, 0, radius * 0.65, pi  * 1.5 - (pi /30 * this.value), pi  * 1.5);
     nctx.fillStyle = 'red';
     nctx.fill();
 
@@ -157,7 +169,7 @@
         nctx.moveTo(0, 0);
         nctx.clearRect(-ncanvas.width/2, -ncanvas.height/2, ncanvas.width, ncanvas.height);
 
-        nctx.arc(0, 0, radius * 0.75, pi  * 1.5 - (pi /30 * (slider.value)), pi  * 1.5);
+        nctx.arc(0, 0, radius * 0.65, pi  * 1.5 - (pi /30 * (slider.value)), pi  * 1.5);
         nctx.fillStyle = 'red';
         nctx.fill();
         if (slider.value == 0) {
@@ -167,16 +179,6 @@
         output.innerHTML = slider.value;
       }, 60000);
     }
-
-
-
-
-
-
-
-
-
-
 
 </script>
 </body>
